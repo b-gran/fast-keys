@@ -3,15 +3,21 @@
   "version": "0.1.0",
   "main": "index.js",
   "license": "MIT",
+  "repository" :{
+    "type" : "git",
+    "url" : "https://github.com/b-gran/fast-keys.git"
+  },
   "scripts": {
     "build": "neutrino build",
     "lint": "neutrino lint",
-    "test": "neutrino test"
+    "test": "neutrino test",
+    "publish": "(cat package.json | jq .version | xargs -I{} echo About to publish version {}. Press any key to continue.) && read && neutrino publish"
   },
   "devDependencies": {
     "@neutrinojs/jest": "^8.2.3",
     "@neutrinojs/library": "^8.2.3",
     "@neutrinojs/standardjs": "^8.2.3",
+    "fluture": "^8.0.2",
     "neutrino": "^8.2.3",
     "ramda": "^0.25.0"
   }
