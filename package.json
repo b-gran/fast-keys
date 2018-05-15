@@ -1,6 +1,6 @@
 {
   "name": "fast-keys",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -12,6 +12,7 @@
     "@neutrinojs/jest": "^8.2.3",
     "@neutrinojs/library": "^8.2.3",
     "@neutrinojs/standardjs": "^8.2.3",
-    "neutrino": "^8.2.3"
+    "neutrino": "^8.2.3",
+    "ramda": "^0.25.0"
   }
 }
