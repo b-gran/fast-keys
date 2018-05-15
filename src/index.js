@@ -79,6 +79,6 @@ export default function K (object) {
         }
         iteratee(object[key])
       }
-    },
+    }
   }
 }
