@@ -6,8 +6,17 @@ const Future = require('fluture')
 const R = require('ramda')
 
 const assetsDirectory = 'https://github.com/b-gran/fast-keys/raw/master/assets'
-const readme = path.join(__dirname, 'README.md')
-const license = path.join(__dirname, 'LICENSE')
+const readme = 'README.md'
+const license ='LICENSE'
+const typeDefs = 'index.d.ts'
+
+function rootDir (name) {
+  return path.join(__dirname, name)
+}
+
+const getOutputForNeutrino = R.curry(
+  (neutrino, name) => path.resolve(path.join(neutrino.options.output, name))
+)
 
 module.exports = {
   use: [
@@ -26,6 +35,7 @@ module.exports = {
         const isNextRelease = neutrino.options.args.next
         const packageJson = neutrino.options.packageJson
         const mainFile = path.resolve(path.join(neutrino.options.output, packageJson.main))
+        const outputDir = getOutputForNeutrino(neutrino)
 
         return Future.node(done => fs.access(mainFile, done))
           .mapRej(() => {
@@ -44,27 +54,27 @@ module.exports = {
               .node(done => fs.writeFile(publishablePackageJsonPath, packageJsonString, done))
           })
 
+          // Copy type defs
+          .chain(() => copyWith(
+            rootDir(typeDefs),
+            outputDir(typeDefs)
+          ))
+
           // Copy LICENSE
-          .chain(() => Future.node(done => fs.readFile(license, done)))
-          .chain(licenseContents => Future.node(done => fs.writeFile(
-            path.resolve(path.join(neutrino.options.output, 'LICENSE')),
-            licenseContents,
-            done
-          )))
+          .chain(() => copyWith(
+            rootDir(license),
+            outputDir(license)
+          ))
 
           // Copy README to build & substitute assets
-          .chain(() => Future.node(done => fs.readFile(readme, done)))
-          .chain(readmeContents => {
-            const substituteAssets = readmeContents.toString().replace(
+          .chain(() => copyWith(
+            rootDir(readme),
+            outputDir(readme),
+            content => content.toString().replace(
               /\(assets\/([\w\-_.]+)\)/,
               `(${assetsDirectory}/$1)`
             )
-            return Future.node(done => fs.writeFile(
-              path.resolve(path.join(neutrino.options.output, 'README.md')),
-              substituteAssets,
-              done
-            ))
-          })
+          ))
 
           // Run publish
           .chain(() => {
@@ -86,4 +96,13 @@ module.exports = {
       })
     }
   ]
-};
+}
+
+function copyWith (from, to, transform = R.identity) {
+  return Future.node(done => fs.readFile(from, done))
+    .chain(contents => Future.node(done => fs.writeFile(
+      to,
+      transform(contents),
+      done
+    )))
+}
