@@ -2,6 +2,7 @@
   "name": "fast-keys",
   "version": "0.1.0",
   "main": "index.js",
+  "types": "index.d.ts",
   "license": "MIT",
   "repository" :{
     "type" : "git",
