@@ -3,6 +3,10 @@ export default function K (object) {
     return typeof key === 'string' && object.hasOwnProperty(key)
   }
 
+  if (object === null || object === undefined) {
+    throw new TypeError('Cannot convert undefined or null to object')
+  }
+
   return {
     get length () {
       let length = 0

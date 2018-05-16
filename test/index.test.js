@@ -2,6 +2,12 @@ import * as R from 'ramda'
 import K from '../src/index'
 
 describe('K', () => {
+  [null, undefined].forEach(nil => {
+    it('throws a TypeError for nil input', () => {
+      expect(() => K(nil)).toThrowError(TypeError)
+    })
+  })
+
   describe('length', () => {
     it('returns 0 for the empty object', () => {
       expect(K({}).length).toBe(0)
