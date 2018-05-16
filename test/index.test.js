@@ -153,6 +153,48 @@ describe('K', () => {
       expect(K(object).toSet()).toEqual(new Set([ 'foo', 'bar' ]))
     })
   })
+
+  describe('every()', () => {
+    it('returns true for the empty object', () => {
+      expect(K({}).every(R.F)).toBe(true)
+    })
+
+    it('returns false if any key fails the predicate', () => {
+      const object = { 1: 1, 2: 1, 3: 1, 4: 1}
+      const spy = jest.fn(k => k !== '4')
+      expect(K(object).every(spy)).toBe(false)
+      expect(spy).toHaveBeenCalledWith('4')
+    })
+
+    it('returns true if every key passes the predicate', () => {
+      const object = { 1: 1, 2: 1, 3: 1, 4: 1}
+      const spy = jest.fn(R.T)
+      expect(K(object).every(spy)).toBe(true)
+      expect(spy).toHaveBeenCalledTimes(4)
+    })
+
+    it('skips inherited keys', () => {
+      const object = getObjectWithInheritedProperties({ 1: 1, 2: 1 }, { 3: 1, 4: 1})
+      const spy = jest.fn(R.T)
+      K(object).every(spy)
+
+      expect(spy).toHaveBeenCalledTimes(2)
+      expect(spy).toHaveBeenCalledWith('1')
+      expect(spy).toHaveBeenCalledWith('2')
+      expect(spy).not.toHaveBeenCalledWith('3')
+      expect(spy).not.toHaveBeenCalledWith('4')
+    })
+
+    it('skips non-enumerable and non-string keys', () => {
+      const object = getObjectWithSymbolAndNonEnumerableProperties({ foo: 1, bar: 1 })
+      const spy = jest.fn(R.T)
+      K(object).every(spy)
+
+      expect(spy).toHaveBeenCalledTimes(2)
+      expect(spy).toHaveBeenCalledWith('foo')
+      expect(spy).toHaveBeenCalledWith('bar')
+    })
+  })
 })
 
 function getObjectWithInheritedProperties (ownProps, inheritedProps) {
