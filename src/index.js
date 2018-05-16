@@ -77,7 +77,7 @@ export default function K (object) {
         if (!isEnumberableNamedStringKey(key)) {
           continue
         }
-        iteratee(object[key])
+        iteratee(key)
       }
     }
   }
