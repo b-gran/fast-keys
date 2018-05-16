@@ -230,6 +230,55 @@ describe('K', () => {
         expect(spy).toHaveBeenCalledWith('bar')
       })
     })
+
+    describe('forEach()', () => {
+      it('does not call the iteratee for the empty object', () => {
+        const spy = jest.fn()
+        K({}).forEach(spy)
+
+        expect(spy).not.toHaveBeenCalled()
+      })
+
+      it('calls the iteratee for every key', () => {
+        const object = { 1: 1, foo: 1, bar: 1 }
+        const spy = jest.fn()
+        K(object).forEach(spy)
+
+        expect(spy).toHaveBeenCalledTimes(3)
+        expect(spy).toHaveBeenCalledWith('foo')
+        expect(spy).toHaveBeenCalledWith('bar')
+        expect(spy).toHaveBeenCalledWith('1')
+      })
+
+      it('always returns null or undefined', () => {
+        const emptyResult = K({}).forEach(R.T)
+        const nonEmptyResult = K({ 1: 1, 2: 1 }).forEach(R.T)
+        expect(R.isNil(emptyResult)).toBeTruthy()
+        expect(R.isNil(nonEmptyResult)).toBeTruthy()
+      })
+
+      it('skips inherited keys', () => {
+        const object = getObjectWithInheritedProperties({ 1: 1, 2: 1 }, { 3: 1, 4: 1})
+        const spy = jest.fn()
+        K(object).forEach(spy)
+
+        expect(spy).toHaveBeenCalledTimes(2)
+        expect(spy).toHaveBeenCalledWith('1')
+        expect(spy).toHaveBeenCalledWith('2')
+        expect(spy).not.toHaveBeenCalledWith('3')
+        expect(spy).not.toHaveBeenCalledWith('4')
+      })
+
+      it('skips non-enumerable and non-string keys', () => {
+        const object = getObjectWithSymbolAndNonEnumerableProperties({ foo: 1, bar: 1 })
+        const spy = jest.fn()
+        K(object).forEach(spy)
+
+        expect(spy).toHaveBeenCalledTimes(2)
+        expect(spy).toHaveBeenCalledWith('foo')
+        expect(spy).toHaveBeenCalledWith('bar')
+      })
+    })
   })
 })
 
