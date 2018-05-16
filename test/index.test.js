@@ -194,6 +194,42 @@ describe('K', () => {
       expect(spy).toHaveBeenCalledWith('foo')
       expect(spy).toHaveBeenCalledWith('bar')
     })
+
+    describe('filter()', () => {
+      it('returns an empty object for the empty object', () => {
+        expect(K({}).filter(R.F)).toEqual([])
+        expect(K({}).filter(R.T)).toEqual([])
+      })
+
+      it('omits keys that fail the predicate', () => {
+        const object = { 1: 1, 2: 1, 3: 1, 4: 1}
+        const spy = jest.fn(k => k !== '4')
+        expect(K(object).filter(spy)).toEqual([ '1', '2', '3' ])
+        expect(spy).toHaveBeenCalledTimes(4)
+      })
+
+      it('skips inherited keys', () => {
+        const object = getObjectWithInheritedProperties({ 1: 1, 2: 1 }, { 3: 1, 4: 1})
+        const spy = jest.fn(R.T)
+        K(object).filter(spy)
+
+        expect(spy).toHaveBeenCalledTimes(2)
+        expect(spy).toHaveBeenCalledWith('1')
+        expect(spy).toHaveBeenCalledWith('2')
+        expect(spy).not.toHaveBeenCalledWith('3')
+        expect(spy).not.toHaveBeenCalledWith('4')
+      })
+
+      it('skips non-enumerable and non-string keys', () => {
+        const object = getObjectWithSymbolAndNonEnumerableProperties({ foo: 1, bar: 1 })
+        const spy = jest.fn(R.T)
+        K(object).filter(spy)
+
+        expect(spy).toHaveBeenCalledTimes(2)
+        expect(spy).toHaveBeenCalledWith('foo')
+        expect(spy).toHaveBeenCalledWith('bar')
+      })
+    })
   })
 })
 
