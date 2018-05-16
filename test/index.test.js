@@ -90,7 +90,7 @@ describe('K', () => {
     })
   })
 
-  describe('map', () => {
+  describe('map()', () => {
     it('returns an empty array for the empty object', () => {
       expect(K({}).map(R.T)).toEqual([])
     })
@@ -115,6 +115,7 @@ describe('K', () => {
       const spy = jest.fn()
       K(object).map(spy)
 
+      expect(spy).toHaveBeenCalledTimes(2)
       expect(spy).toHaveBeenCalledWith('1')
       expect(spy).toHaveBeenCalledWith('2')
       expect(spy).not.toHaveBeenCalledWith('3')
@@ -132,7 +133,7 @@ describe('K', () => {
     })
   })
 
-  describe('toSet', () => {
+  describe('toSet()', () => {
     it('returns an empty Set for the empty object', () => {
       expect(K({}).toSet()).toEqual(new Set())
     })
