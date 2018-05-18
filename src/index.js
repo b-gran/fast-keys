@@ -1,8 +1,4 @@
 export default function K (object) {
-  function isEnumberableNamedStringKey (key) {
-    return typeof key === 'string' && object.hasOwnProperty(key)
-  }
-
   if (object === null || object === undefined) {
     throw new TypeError('Cannot convert undefined or null to object')
   }
@@ -11,7 +7,7 @@ export default function K (object) {
     get length () {
       let length = 0
       for (const key in object) {
-        if (!isEnumberableNamedStringKey(key)) {
+        if (!isEnumberableNamedStringKey(key, object)) {
           continue
         }
         length += 1
@@ -20,7 +16,7 @@ export default function K (object) {
     },
     some: iteratee => {
       for (const key in object) {
-        if (!isEnumberableNamedStringKey(key)) {
+        if (!isEnumberableNamedStringKey(key, object)) {
           continue
         }
 
@@ -33,7 +29,7 @@ export default function K (object) {
     map: iteratee => {
       const result = []
       for (const key in object) {
-        if (!isEnumberableNamedStringKey(key)) {
+        if (!isEnumberableNamedStringKey(key, object)) {
           continue
         }
 
@@ -44,7 +40,7 @@ export default function K (object) {
     toSet: () => {
       const set = new Set()
       for (const key in object) {
-        if (!isEnumberableNamedStringKey(key)) {
+        if (!isEnumberableNamedStringKey(key, object)) {
           continue
         }
         set.add(key)
@@ -53,7 +49,7 @@ export default function K (object) {
     },
     every: iteratee => {
       for (const key in object) {
-        if (!isEnumberableNamedStringKey(key)) {
+        if (!isEnumberableNamedStringKey(key, object)) {
           continue
         }
 
@@ -66,7 +62,7 @@ export default function K (object) {
     filter: iteratee => {
       const filteredElements = []
       for (const key in object) {
-        if (!isEnumberableNamedStringKey(key)) {
+        if (!isEnumberableNamedStringKey(key, object)) {
           continue
         }
 
@@ -78,11 +74,27 @@ export default function K (object) {
     },
     forEach: iteratee => {
       for (const key in object) {
-        if (!isEnumberableNamedStringKey(key)) {
+        if (!isEnumberableNamedStringKey(key, object)) {
           continue
         }
         iteratee(key)
       }
+    },
+    find: predicate => {
+      for (const key in object) {
+        if (!isEnumberableNamedStringKey(key, object)) {
+          continue
+        }
+
+        if (predicate(key)) {
+          return key
+        }
+      }
+      return undefined
     }
   }
+}
+
+function isEnumberableNamedStringKey (key, object) {
+  return typeof key === 'string' && object.hasOwnProperty(key)
 }
