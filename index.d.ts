@@ -14,7 +14,7 @@ declare namespace FastKeys {
         every(iteratee: Predicate<ObjectType>): boolean
         filter(iteratee: Predicate<ObjectType>): Array<keyof ObjectType>
         forEach(iteratee: (key: keyof ObjectType) => void): void
-        find(predicate: Predicate<ObjectType>): keyof ObjectType
+        find(predicate: Predicate<ObjectType>): keyof ObjectType | undefined
     }
 }
 
