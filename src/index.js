@@ -2,11 +2,11 @@
 // If a plain object is created by K, the performance is up to 100x worse.
 class FastKeys {
   constructor (object) {
-    this.object = object
+    this.__object = object
   }
 
   get length () {
-    const object = this.object
+    const object = this.__object
     let length = 0
     for (const key in object) {
       if (typeof key !== 'string' || !object.hasOwnProperty(key)) {
@@ -18,7 +18,7 @@ class FastKeys {
   }
 
   some (iteratee) {
-    const object = this.object
+    const object = this.__object
     for (const key in object) {
       if (typeof key !== 'string' || !object.hasOwnProperty(key)) {
         continue
@@ -32,7 +32,7 @@ class FastKeys {
   }
 
   map (iteratee) {
-    const object = this.object
+    const object = this.__object
     const result = []
     for (const key in object) {
       if (typeof key !== 'string' || !object.hasOwnProperty(key)) {
@@ -45,7 +45,7 @@ class FastKeys {
   }
 
   toSet () {
-    const object = this.object
+    const object = this.__object
     const set = new Set()
     for (const key in object) {
       if (typeof key !== 'string' || !object.hasOwnProperty(key)) {
@@ -57,7 +57,7 @@ class FastKeys {
   }
 
   every (iteratee) {
-    const object = this.object
+    const object = this.__object
     for (const key in object) {
       if (typeof key !== 'string' || !object.hasOwnProperty(key)) {
         continue
@@ -71,7 +71,7 @@ class FastKeys {
   }
 
   filter (iteratee) {
-    const object = this.object
+    const object = this.__object
     const filteredElements = []
     for (const key in object) {
       if (typeof key !== 'string' || !object.hasOwnProperty(key)) {
@@ -86,7 +86,7 @@ class FastKeys {
   }
 
   forEach (iteratee) {
-    const object = this.object
+    const object = this.__object
     for (const key in object) {
       if (typeof key !== 'string' || !object.hasOwnProperty(key)) {
         continue
@@ -96,7 +96,7 @@ class FastKeys {
   }
 
   find (predicate) {
-    const object = this.object
+    const object = this.__object
     for (const key in object) {
       if (typeof key !== 'string' || !object.hasOwnProperty(key)) {
         continue

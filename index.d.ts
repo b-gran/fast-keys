@@ -9,12 +9,12 @@ declare namespace FastKeys {
         length: number;
 
         some(iteratee: Predicate<ObjectType>): boolean
+        map<A>(iteratee: (key: keyof ObjectType) => A): Array<A>
+        toSet(): Set<keyof ObjectType>
         every(iteratee: Predicate<ObjectType>): boolean
         filter(iteratee: Predicate<ObjectType>): Array<keyof ObjectType>
         forEach(iteratee: (key: keyof ObjectType) => void): void
-        map<A>(iteratee: (key: keyof ObjectType) => A): Array<A>
-
-        toSet(): Set<keyof ObjectType>
+        find(predicate: Predicate<ObjectType>): keyof ObjectType
     }
 }
 
