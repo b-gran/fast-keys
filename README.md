@@ -62,21 +62,66 @@ function K <ObjectType> (object: ObjectType): IFastKeys<ObjectType>
 ## `IFastKeys`
 The interface that exposes the `Array.prototype` methods.
 
-<pre><code class="language-typescript">
-interface IFastKeys &lt;ObjectType> {
-    <a href="#ifastkeyslength">length</a>: number;
+```typescript
+interface IFastKeys <ObjectType> {
+    length: number;
 
-    <a href="#ifastkeyssome">some(iteratee: Predicate&lt;ObjectType>)</a>: boolean
-    <a href="#ifastkeysmap">map&lt;A>(iteratee: (key: keyof ObjectType) => A)</a>: Array&lt;A>
-    <a href="#ifastkeystoset">toSet()</a>: Set&lt;keyof ObjectType>
-    <a href="#ifastkeysevery">every(iteratee: Predicate&lt;ObjectType>)</a>: boolean
-    <a href="#ifastkeysfilter">filter(iteratee: Predicate&lt;ObjectType>)</a>: Array<keyof ObjectType>
-    <a href="#ifastkeysforeach">forEach(iteratee: (key: keyof ObjectType) => void)</a>: void
-    <a href="#ifastkeysfind">find(predicate: Predicate&lt;ObjectType>)</a>: keyof ObjectType | undefined
+    some(iteratee: Predicate<ObjectType>): boolean
+    map<A>(iteratee: (key: keyof ObjectType) => A): Array<A>
+    toSet(): Set<keyof ObjectType>
+    every(iteratee: Predicate<ObjectType>): boolean
+    filter(iteratee: Predicate<ObjectType>): Array
+    forEach(iteratee: (key: keyof ObjectType) => void): void
+    find(predicate: Predicate<ObjectType>): keyof ObjectType | undefined
 }
 
-type Predicate &lt;ObjectType> = (key: keyof ObjectType) => boolean
-</code></pre>
+type Predicate <ObjectType> = (key: keyof ObjectType) => boolean
+```
+
+<table>
+<thead>
+<td>
+
+[`length`](#ifastkeyslength)
+
+</td>
+<td>
+
+[`some()`](#ifastkeyssome)
+
+</td>
+<td>
+
+[`map()`](#ifastkeysmap)
+
+</td>
+<td>
+
+[`toSet()`](#ifastkeystoset)
+
+</td>
+<td>
+
+[`every()`](#ifastkeysevery)
+
+</td>
+<td>
+
+[`filter()`](#ifastkeysfilter)
+
+</td>
+<td>
+
+[`forEach()`](#ifastkeysforeach)
+
+</td>
+<td>
+
+[`find()`](#ifastkeysfind)
+
+</td>
+</thead>
+</table>
 
 `IFastKeys` predicates are only passed the key **and are not passed the index or the entire array of keys.**
 
