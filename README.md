@@ -31,12 +31,12 @@ const keyLength = Object.keys(object).length
 ```
 
 In order to determine the key length, the runtime will allocate an array containing all of the object's keys and then return the length of the array.
-For applications where performance is important, the cost of these quickly array allocations adds up.
-Not only does is the array allocation itself expensive, additional garbage collection is needed to clean up the arrays afterward.
+For applications where performance is important, the cost of these array allocations quickly adds up.
+Not only is the array allocation expensive, the runtime will need to perform additional garbage collection to clean up the arrays.
 
-Of course, it's possible to do explicit object key iteration in performance-critical applications, but by doing so we aren't able to use many of the useful functional tools available in the Javascript ecosystem.
+Of course, it's possible to do explicit object key iteration in performance-critical applications - but by doing so we aren't able to use many of the useful functional tools available in the Javascript ecosystem.
 
-This library provides the best of both worlds: the familiar functional-style `Object.keys` and `Array.prototype` interfaces without the performance costs of unnecessary Array allocations.
+This library provides the best of both worlds: the familiar functional-style `Object.keys` and `Array.prototype` interfaces without the performance costs of unnecessary Array allocations or garbage collection.
 
 # How fast is it?
 
