@@ -285,6 +285,56 @@ describe('K', () => {
         expect(spy).toHaveBeenCalledWith('bar')
       })
     })
+
+    describe('find()', () => {
+      it('returns undefined for the empty object', () => {
+        expect(K({}).find(R.F)).toBe(undefined)
+        expect(K({}).find(R.T)).toBe(undefined)
+      })
+
+      it('returns undefined if no key passes the predicate', () => {
+        const object = { 1: 1, 2: 1, 3: 1, 4: 1}
+        const spy = jest.fn(R.F)
+        expect(K(object).find(spy)).toBe(undefined)
+        expect(spy).toHaveBeenCalledTimes(4)
+      })
+
+      it('returns the first key that passes the predicate', () => {
+        const object = { 1: 1, 2: 1, 3: 1, 4: 1}
+        const predicate = k => k === '4'
+
+        const expectedCalls = jest.fn(predicate)
+        const keyOrdering = Object.keys(object)
+        keyOrdering.find(expectedCalls)
+
+        const spy = jest.fn(predicate)
+        expect(K(object).find(spy)).toBe('4')
+        expect(spy).toHaveBeenCalledTimes(expectedCalls.mock.calls.length)
+      })
+
+      it('skips inherited keys', () => {
+        const object = getObjectWithInheritedProperties({ 1: 1, 2: 1 }, { 3: 1, 4: 1})
+        const spy = jest.fn(R.F)
+        K(object).find(spy)
+
+        expect(spy).toHaveBeenCalledTimes(2)
+        expect(spy).toHaveBeenCalledWith('1')
+        expect(spy).toHaveBeenCalledWith('2')
+        expect(spy).not.toHaveBeenCalledWith('3')
+        expect(spy).not.toHaveBeenCalledWith('4')
+      })
+
+      it('skips non-enumerable and non-string keys', () => {
+        const object = getObjectWithSymbolAndNonEnumerableProperties({ foo: 1, bar: 1 })
+        const spy = jest.fn(R.F)
+        K(object).find(spy)
+
+        expect(spy).toHaveBeenCalledTimes(2)
+        expect(spy).toHaveBeenCalledWith('foo')
+        expect(spy).toHaveBeenCalledWith('bar')
+      })
+    })
+
   })
 })
 
