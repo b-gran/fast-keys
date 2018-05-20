@@ -9,19 +9,6 @@ Its API has many of the same methods as `Array.prototype`, plus a few additional
 * 🧠 Less heap allocation and garbage collection than `Object.keys`
 * 🛠️ Extra utility methods
 
-# Usage
-
-```javascript
-import K from 'fast-keys'
-
-const object = { foo: 1, bar: 1, baz: 1 }
-console.log(K(object).length) // 3
-console.log(K(object).map(string => string + '2')) // [ 'foo2', 'bar2', 'baz2' ]
-console.log(K(object).toSet()) // Set { 'foo', 'bar', 'baz' }
-```
-
-`fast-keys` has many of the `Array.prototype` methods, and some extra helpers too.
-
 # Why should I use this?
 
 `Object.keys` has a significant performance cost. It's extremely common to use `Object.keys` to determine the number of keys in an object:
@@ -47,6 +34,22 @@ It also uses much less memory and requires less garbage collection, so the perfo
 https://jsperf.com/fast-keys
 
 ![Performance](assets/performance.png)
+
+# Examples
+
+```javascript
+import K from 'fast-keys'
+
+const object = { foo: 1, bar: 1, baz: 1 }
+
+console.log(K(object).length) // 3
+
+console.log(K(object).map(string => string + '2')) // [ 'foo2', 'bar2', 'baz2' ]
+
+console.log(K(object).toSet()) // Set { 'foo', 'bar', 'baz' }
+```
+
+`fast-keys` has many of the `Array.prototype` methods, and some extra helpers too.
 
 # API Reference
 
